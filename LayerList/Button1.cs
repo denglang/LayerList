@@ -49,10 +49,14 @@ namespace LayerList
                         {
                             if (line.Split(',')[0]!= "LayerName")
                             {
-                                AddLayer(line.Split(',')[1]);
+                                string filePath = line.Split(',')[1].Trim();
+                                if (File.Exists(filePath))
+                                {
+                                    AddLayer(filePath);
+                                }
+                                else MessageBox.Show(string.Format("{0} doesn't exist or is not accessible", filePath));
                             }                                                          
-                        }
-                           
+                        }                      
                     }
                     
                     //else

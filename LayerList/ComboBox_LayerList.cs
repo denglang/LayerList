@@ -66,8 +66,9 @@ namespace LayerList
                     if (line.Length>=5 && line.Contains(","))
                     {
                         string[] content = line.Split(',');
-                        Add(new ComboBoxItem(content[0]));
-                        layerNameAndPath[content[0]] = content[1];
+                        string layerName = content[0].Trim();
+                        Add(new ComboBoxItem(layerName));
+                        layerNameAndPath[layerName] = content[1].Trim();
                     }
                     
                 }
@@ -81,7 +82,6 @@ namespace LayerList
 
             Enabled = true; //enables the ComboBox
             SelectedItem = ItemCollection.FirstOrDefault(); //set the default item in the comboBox
-
         }
 
         /// <summary>
@@ -102,7 +102,11 @@ namespace LayerList
 
             if (item.Text != "LayerName")
             {
-                btn.AddLayer(layerNameAndPath[item.Text]); //get the path with dictionary key
+                if (File.Exists(layerNameAndPath[item.Text]))
+                { //make sure the path exists
+                    btn.AddLayer(layerNameAndPath[item.Text]); //get the path with dictionary key
+                }
+                else MessageBox.Show(string.Format("{0} doesn't exist or is not accessible", layerNameAndPath[item.Text]));              
             }
 
 
