@@ -6,6 +6,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Forms;
+//using System.Windows.Forms;
 using ArcGIS.Core.CIM;
 using ArcGIS.Core.Data;
 using ArcGIS.Core.Geometry;
@@ -17,7 +20,13 @@ using ArcGIS.Desktop.Framework;
 using ArcGIS.Desktop.Framework.Contracts;
 using ArcGIS.Desktop.Framework.Dialogs;
 using ArcGIS.Desktop.Framework.Threading.Tasks;
+using ArcGIS.Desktop.Internal.Framework.Controls;
 using ArcGIS.Desktop.Mapping;
+//using Microsoft.Win32;
+using ComboBox = ArcGIS.Desktop.Framework.Contracts.ComboBox;
+//using MessageBox = System.Windows.MessageBox;
+using MessageBox = ArcGIS.Desktop.Framework.Dialogs.MessageBox;
+//using System.Windows.Forms;
 
 namespace LayerList
 {
@@ -34,6 +43,11 @@ namespace LayerList
         /// </summary>
         public ComboBox_LayerList()
         {
+            // Testing ComboBox access. Sets this ComboBox to accessible
+            //   variable in AddLayersToMaps static module. JBK - 2020.07.17
+            AddLayersToMap addLayersToMap = AddLayersToMap.Current;
+            if (addLayersToMap == null) return;
+            addLayersToMap.ComboBox_LayerList = this;
             UpdateCombo();
         }
 
@@ -41,7 +55,7 @@ namespace LayerList
         /// Updates the combo box with all the items.
         /// </summary>
 
-        private void UpdateCombo()
+        public void UpdateCombo()  // Testing update combo. Changed to public method. JBK - 2020.07.17
         {
             // TODO – customize this method to populate the combobox with your desired items  
             if (_isInitialized)
@@ -50,33 +64,27 @@ namespace LayerList
 
             if (!_isInitialized)
             {
-                Clear();
-
+                //Clear();
+                ClearLists();
                 //Add items to the combobox
-                string FILE_NAME = @"C:\Work\GIS\data\shpList.txt";
+                string FILE_NAME = @"C:\Work\GIS\data\shpList1.txt";
 
-                if (!File.Exists(FILE_NAME))
+                if (File.Exists(FILE_NAME))
                 {
-                    MessageBox.Show(FILE_NAME+" cannot be found.");
+                    readText(FILE_NAME);
+
+                }
+                else
+                {
+                    //var Result = MessageBox.Show(FILE_NAME + " cannot be found.", "Do you want to open another text file?", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes);
+                    //MessageBox.Show(Result.ToString());
+                    //if (Result == MessageBoxResult.Yes )
+                    MessageBox.Show(FILE_NAME + " cannot be found. Please use OpenTextFile button to search for your text file");
                     return; 
+                   // OpenFile();
                 }
-                string[] lines = File.ReadAllLines(FILE_NAME);
-                foreach (string line in lines)
-                {
-                    if (line.Length>=5 && line.Contains(","))
-                    {
-                        string[] content = line.Split(',');
-                        string layerName = content[0].Trim();
-                        Add(new ComboBoxItem(layerName));
-                        layerNameAndPath[layerName] = content[1].Trim();
-                    }
-                    
-                }
-                //for (int i = 0; i < 6; i++)
-                //{
-                //    string name = string.Format("Item {0}", i);
-                //    Add(new ComboBoxItem(name));
-                //}
+
+
                 _isInitialized = true;
             }
 
@@ -84,6 +92,66 @@ namespace LayerList
             SelectedItem = ItemCollection.FirstOrDefault(); //set the default item in the comboBox
         }
 
+        public void OpenFile()
+        {
+            string fileName = string.Empty;
+            // System.Windows.Forms.OpenFileDialog OpenFileDialog = new System.Windows.Forms.OpenFileDialog();
+            // OpenFileDialog.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+            OpenItemDialog oid = new OpenItemDialog
+            {
+                // oid.BrowseFilter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+
+                Title = "Open a text file",
+                Filter = ItemFilters.textFiles,
+                MultiSelect = true
+            };
+            bool? ok = oid.ShowDialog();
+            //System.Threading.Thread.Sleep(300);
+
+
+            if (ok == true)
+            {
+                IEnumerable<Item> selected = oid.Items;
+
+                fileName = selected.First().Path;
+                //MessageBox.Show("LayerList is updated using "+fileName);
+                readText(fileName);
+            }
+            else MessageBox.Show("No file returned");
+            
+        }
+        public void readText(string FILE_NAME)
+        {
+            //this.Clear();
+            ClearLists();
+            if (FILE_NAME != "")
+            {
+                string[] lines = File.ReadAllLines(FILE_NAME);
+                foreach (string line in lines)
+                {
+                    if (line.Contains(","))
+                    {
+                        string[] content = line.Split(',');
+                        string layerName = content[0].Trim();
+                        //MessageBox.Show(layerName);
+                        Add(new ComboBoxItem(layerName));
+                        layerNameAndPath[layerName] = content[1].Trim();
+                    }
+                    else
+                    {                      
+                        Add(new ComboBoxItem(line.Trim()));
+                        layerNameAndPath[line.Trim()] = line.Trim();
+                    }
+                }
+                MessageBox.Show(this.ItemCollection.Count()-1 + " layers added to layer list from "+FILE_NAME);
+                _isInitialized = true;
+            }
+            else
+            {
+                MessageBox.Show("No file to read");
+                return;
+            }
+        }
         /// <summary>
         /// The on comboBox selection change event. 
         /// </summary>
@@ -98,15 +166,15 @@ namespace LayerList
 
             // TODO  Code behavior when selection changes.   
             Button1 btn = new Button1();
-            //btn.AddLayer(item.Text);
+            
 
             if (item.Text != "LayerName")
             {
-                if (File.Exists(layerNameAndPath[item.Text]))
-                { //make sure the path exists
+                if (File.Exists(layerNameAndPath[item.Text]))  //make sure the path exists
+                {
                     btn.AddLayer(layerNameAndPath[item.Text]); //get the path with dictionary key
                 }
-                else MessageBox.Show(string.Format("{0} doesn't exist or is not accessible", layerNameAndPath[item.Text]));              
+                else System.Windows.MessageBox.Show(string.Format("{0} doesn't exist or is not accessible", layerNameAndPath[item.Text]));              
             }
 
 
@@ -124,19 +192,10 @@ namespace LayerList
 
         }
 
-        private String[] LayerNamePath()
+        private void ClearLists()
         {
-            string[] content = new string[] { };
-            string FILE_NAME = @"C:\Work\GIS\data\shpList.txt";
-            string[] lines = File.ReadAllLines(FILE_NAME);//.Where(x =>!string.IsNullOrWhiteSpace(x));
-            foreach (string line in lines)
-            {
-                content = line.Split(',');
-                //Add(new ComboBoxItem(content[0]));
-                return content; 
-
-            }
-            return content; 
+            Clear(); //clear the comboBox
+            layerNameAndPath.Clear(); //clear the dictionary
         }
 
     }

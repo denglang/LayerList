@@ -24,10 +24,9 @@ namespace LayerList
     {
         private static AddLayersToMap _this = null;
        
-
+        // Testing ComboBox access through this static module.JBK - 2020.07.17
+        public ComboBox_LayerList ComboBox_LayerList { get; set; } = null;
         //string text = System.IO.File.ReadAllText(FILE_NAME);
-        // private static MapView mv = MapView.Active;
-       
 
         /// <summary>
         /// Retrieve the singleton instance to this module here
@@ -36,7 +35,8 @@ namespace LayerList
         {
             get
             {
-                return _this ?? (_this = (AddLayersToMap)FrameworkApplication.FindModule("LayerList_AddLayersToMap"));
+                //return _this ?? (_this = (AddLayersToMap)FrameworkApplication.FindModule("LayerList_AddLayersToMap"));
+                return _this ?? (_this = (AddLayersToMap)FrameworkApplication.FindModule("LayerList_Module"));
             }
         }
 

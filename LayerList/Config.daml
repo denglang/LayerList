@@ -11,7 +11,9 @@
                     Content, Framework, Editing, Geodatabase, Geometry, Geoprocessing, Layouts, Map Authoring, Map Exploration -->
   </AddInInfo>
   <modules>
-    <insertModule id="LayerList_Module" className="Module1" autoLoad="false" caption="Module1">
+    <!-- Testing Module reference change to get access to the module. JBK - 2020.07.17 -->
+    <!--<insertModule id="LayerList_Module" className="Module1" autoLoad="false" caption="Module1">-->
+      <insertModule id="LayerList_Module" className="AddLayersToMap" autoLoad="true" caption="Module1">
       <!-- uncomment to have the control hosted on a separate tab-->
       <tabs>
         <!--<tab id="LayerList_Tab1" caption="New Tab">
@@ -21,11 +23,12 @@
       <groups>
         <!-- comment this out if you have no controls on the Addin tab to avoid
               an empty group-->
-        <group id="LayerList_Group1" caption="Group 1" appearsOnAddInTab="true">
+        <group id="LayerList_Group1" caption="Show Layer List " appearsOnAddInTab="true">
           <!-- host controls within groups -->
           <comboBox refID="LayerList_GetLayerFile" />
           <button refID="LayerList_Button1" size="large" />
           <comboBox refID="LayerList_ComboBox_LayerList" />
+          <button refID="LayerList_Button2" size="large" />
         </group>
       </groups>
       <controls>
@@ -36,6 +39,9 @@
         <comboBox id="LayerList_ComboBox_LayerList" caption="Select Layer" className="ComboBox_LayerList" itemWidth="140" extendedCaption="Extended Caption" isEditable="false" isReadOnly="true" resizable="true">
           <tooltip heading="Select a file to add to map">Select file name from the dropdown box to add to map, the file can be a layer, shapefile or raster<disabledText /></tooltip>
         </comboBox>
+        <button id="LayerList_Button2" caption="OpenTextFile" className="Button2" loadOnClick="true" smallImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonBlue16.png" largeImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonBlue32.png">
+          <tooltip heading="Open Text File">Open text file and populate layer comboBox<disabledText /></tooltip>
+        </button>
       </controls>
     </insertModule>
   </modules>
