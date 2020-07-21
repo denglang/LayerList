@@ -26,7 +26,8 @@ namespace LayerList
        
         // Testing ComboBox access through this static module.JBK - 2020.07.17
         public ComboBox_LayerList ComboBox_LayerList { get; set; } = null;
-        //string text = System.IO.File.ReadAllText(FILE_NAME);
+        public Button1 B1 { get; set; } = null;
+        //public string FILE_NAME = string.Empty;
 
         /// <summary>
         /// Retrieve the singleton instance to this module here

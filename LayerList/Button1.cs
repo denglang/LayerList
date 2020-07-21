@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using ArcGIS.Core.CIM;
@@ -22,19 +23,22 @@ namespace LayerList
 {
     internal class Button1 : Button
     {
+        public string FILE_NAME = string.Empty;
         protected override void OnClick()
         {
-            string uriShp = @"C:\Work\GIS\data\states.shp";
-            //AddLayer(uriShp);
+           AddLayersToMap addLayersToMap = AddLayersToMap.Current;
+            addLayersToMap.B1 = this; 
             GetLayers();
         }
 
         public void GetLayers()
         {
             //string FILE_NAME = @"W:\Ames\LayerFiles\coa_LAYERS_list_W.txt"; 
-            string FILE_NAME = @"C:\Work\GIS\data\shpList.txt";
-            MapView mv = MapView.Active;
-            Map map = mv.Map;
+            if (FILE_NAME == "") { 
+                FILE_NAME = @"C:\Work\GIS\data\shpList1.txt";
+            }
+            //MapView mv = MapView.Active;
+            //Map map = mv.Map;
             if (File.Exists(FILE_NAME))
             {
 
@@ -56,7 +60,20 @@ namespace LayerList
                                 }
                                 else MessageBox.Show(string.Format("{0} doesn't exist or is not accessible", filePath));
                             }                                                          
-                        }                      
+                        }
+                        else
+                        {
+                            string fPath = line.Trim();
+                            //FName = Path.GetFileNameWithoutExtension(FName);
+                            if (File.Exists(fPath))
+                            {
+                                AddLayer(fPath);
+                            } 
+                            else MessageBox.Show(string.Format("{0} doesn't exist or is not accessible", fPath));
+                            
+                           
+                          
+                        }
                     }
                     
                     //else
@@ -68,9 +85,11 @@ namespace LayerList
             }
             else
             {
-
-                string uriShp = @"C:\Work\GIS\data\states.shp";
-                Layer lyr = LayerFactory.Instance.CreateLayer(new Uri(uriShp), map);
+                MessageBox.Show(FILE_NAME + " is not accessible");
+                this.Enabled = false;
+                return; 
+                //string uriShp = @"C:\Work\GIS\data\states.shp";
+                //Layer lyr = LayerFactory.Instance.CreateLayer(new Uri(uriShp), map);
             }
         }
 

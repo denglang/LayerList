@@ -67,8 +67,8 @@ namespace LayerList
                 //Clear();
                 ClearLists();
                 //Add items to the combobox
-                string FILE_NAME = @"\\iowa.gov.state.ia.us\DATA\DNR_GIS_Data\gis_tools\ArcGISProAddin\layerList.txt";
-                //string FILE_NAME = @"C:\Work\GIS\data\shpList.txt";
+                //string FILE_NAME = @"\\iowa.gov.state.ia.us\DATA\DNR_GIS_Data\gis_tools\ArcGISProAddin\layerList.txt";
+                string FILE_NAME = @"C:\Work\GIS\data\shpList1.txt";
 
                 if (File.Exists(FILE_NAME))
                 {
@@ -80,12 +80,11 @@ namespace LayerList
                     //var Result = MessageBox.Show(FILE_NAME + " cannot be found.", "Do you want to open another text file?", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes);
                     //MessageBox.Show(Result.ToString());
                     //if (Result == MessageBoxResult.Yes )
+                    
                     MessageBox.Show(FILE_NAME + " cannot be found. Please use OpenTextFile button to search for your text file");
                     return; 
                    // OpenFile();
                 }
-
-
                 _isInitialized = true;
             }
 
@@ -116,6 +115,15 @@ namespace LayerList
 
                 fileName = selected.First().Path;
                 //MessageBox.Show("LayerList is updated using "+fileName);
+
+                //pass the text file path to Button1, so it can read the file too. 
+                AddLayersToMap addLayersToMap = AddLayersToMap.Current;
+
+                Button1 b1 = addLayersToMap.B1; //// get the instance of the current one, do not create a new Button1
+                //Button1 b1 = new Button1(); 
+                b1.FILE_NAME = fileName;
+                b1.Enabled = true; 
+
                 readText(fileName);
             }
             else MessageBox.Show("No file returned");
@@ -168,8 +176,9 @@ namespace LayerList
                 return;
 
             // TODO  Code behavior when selection changes.   
-            Button1 btn = new Button1();
-            
+            AddLayersToMap addLayersToMap = AddLayersToMap.Current;
+
+            Button1 btn = addLayersToMap.B1; //new Button1();
 
             if (item.Text != "LayerName")
             {
