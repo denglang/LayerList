@@ -41,7 +41,7 @@ namespace LayerList
                 foreach (var item in cmbox.ItemCollection)
                 {
                     //Debug.Print(item.GetType());
-                    MessageBox.Show(item.ToString());
+                    //MessageBox.Show(item.ToString());
                     if(item.ToString() != "LayerName")
                     {
                         if (File.Exists(dict[item.ToString()]))

@@ -129,12 +129,16 @@ namespace LayerList
                         b1.Enabled = true;
                     }
                 }
-                
+
 
 
                 readText(fileName);
             }
-            else MessageBox.Show("No file returned");
+            else
+            {
+                MessageBox.Show("No file selected");
+                return; 
+            }
             
         }
         public void readText(string FILE_NAME)
@@ -144,6 +148,11 @@ namespace LayerList
             if (FILE_NAME != "")
             {
                 string[] lines = File.ReadAllLines(FILE_NAME);
+                if (lines.ToList().Count == 0)
+                {
+                    MessageBox.Show(FILE_NAME + " is empty!");
+                    return; 
+                }
                 foreach (string line in lines)
                 {
                     if (line.Contains(","))
@@ -186,11 +195,7 @@ namespace LayerList
             // TODO  Code behavior when selection changes.   
             AddLayersToMap addLayersToMap = AddLayersToMap.Current;
 
-            Button1 btn = addLayersToMap.B1??new Button1();
-            //if (btn == null)
-            //{
-            //    btn = new Button1();
-            //}
+            Button1 btn = addLayersToMap.B1??new Button1();          
 
             if (item.Text != "LayerName")
             {
