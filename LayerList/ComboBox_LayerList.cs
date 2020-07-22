@@ -37,7 +37,7 @@ namespace LayerList
     {
         public Dictionary<string, string> layerNameAndPath = new Dictionary<string, string>();
         private bool _isInitialized;
-        //private static string FILE_NAME = @"C:\Work\GIS\data\shpList.txt";
+       
         /// <summary>
         /// Combo Box constructor
         /// </summary>
@@ -67,8 +67,8 @@ namespace LayerList
                 //Clear();
                 ClearLists();
                 //Add items to the combobox
-                //string FILE_NAME = @"\\iowa.gov.state.ia.us\DATA\DNR_GIS_Data\gis_tools\ArcGISProAddin\layerList.txt";
-                string FILE_NAME = @"C:\Work\GIS\data\shpList1.txt";
+                string FILE_NAME = @"\\iowa.gov.state.ia.us\DATA\DNR_GIS_Data\gis_tools\ArcGISProAddin\layerList.txt";
+                //string FILE_NAME = @"C:\Work\GIS\data\shpList1.txt";
 
                 if (File.Exists(FILE_NAME))
                 {
@@ -129,9 +129,6 @@ namespace LayerList
                         b1.Enabled = true;
                     }
                 }
-
-
-
                 readText(fileName);
             }
             else
@@ -197,7 +194,7 @@ namespace LayerList
 
             Button1 btn = addLayersToMap.B1??new Button1();          
 
-            if (item.Text != "LayerName")
+            if (item.Text.ToUpper() != "LAYERNAME")
             {
                 if (File.Exists(layerNameAndPath[item.Text]))  //make sure the path exists
                 {
@@ -226,6 +223,30 @@ namespace LayerList
             Clear(); //clear the comboBox
             layerNameAndPath.Clear(); //clear the dictionary
         }
+
+        //the OnUpdate method will run automatically when the comboBox is empty. 
+        //protected override void OnUpdate()
+        //{
+        //    if (_isInitialized != true && SelectedItem == null)
+        //    {
+        //        OpenItemDialog oid = new OpenItemDialog
+        //        {
+        //            Title = "Open a text file.",
+        //            Filter = ItemFilters.textFiles,
+        //            MultiSelect = true
+        //        };
+
+        //        if (!oid.ShowDialog().Value)
+        //        {
+        //            return;
+        //        }
+
+        //        var item = oid.Items.First();
+        //        readText(item.Path);
+
+        //        SelectedItem = ItemCollection.FirstOrDefault(); //set the default item in the comboBox
+        //    }
+        //}
 
     }
 }
