@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
@@ -17,6 +18,7 @@ using ArcGIS.Desktop.Framework;
 using ArcGIS.Desktop.Framework.Contracts;
 using ArcGIS.Desktop.Framework.Dialogs;
 using ArcGIS.Desktop.Framework.Threading.Tasks;
+using ArcGIS.Desktop.Internal.Mapping;
 using ArcGIS.Desktop.Mapping;
 
 namespace LayerList
@@ -27,8 +29,30 @@ namespace LayerList
         protected override void OnClick()
         {
            AddLayersToMap addLayersToMap = AddLayersToMap.Current;
-            addLayersToMap.B1 = this; 
-            GetLayers();
+            addLayersToMap.B1 = this;
+
+            ComboBox_LayerList cmbox = addLayersToMap.ComboBox_LayerList;
+            // List<string> items = addLayersToMap.ComboBox_LayerList.ItemCollection;
+            Dictionary<string, string> dict = cmbox.layerNameAndPath;
+
+            if (cmbox.ItemCollection.Count > 0)
+            {
+                //IEnumerable<Item> items = cmbox.ItemCollection;
+                foreach (var item in cmbox.ItemCollection)
+                {
+                    //Debug.Print(item.GetType());
+                    MessageBox.Show(item.ToString());
+                    if(item.ToString() != "LayerName")
+                    {
+                        if (File.Exists(dict[item.ToString()]))
+                        {
+                            AddLayer(dict[item.ToString()]);
+                        }                        
+                    }                    
+                }
+            }
+            
+            else GetLayers();
         }
 
         public void GetLayers()
@@ -41,7 +65,6 @@ namespace LayerList
             //Map map = mv.Map;
             if (File.Exists(FILE_NAME))
             {
-
                 string[] lines = File.ReadAllLines(FILE_NAME);//.Where(x =>!string.IsNullOrWhiteSpace(x));
                 foreach (string line in lines)
                 {                   
@@ -69,10 +92,7 @@ namespace LayerList
                             {
                                 AddLayer(fPath);
                             } 
-                            else MessageBox.Show(string.Format("{0} doesn't exist or is not accessible", fPath));
-                            
-                           
-                          
+                            else MessageBox.Show(string.Format("{0} doesn't exist or is not accessible", fPath));                                                                            
                         }
                     }
                     

@@ -35,7 +35,7 @@ namespace LayerList
     /// </summary>
     internal class ComboBox_LayerList : ComboBox
     {
-        Dictionary<string, string> layerNameAndPath = new Dictionary<string, string>();
+        public Dictionary<string, string> layerNameAndPath = new Dictionary<string, string>();
         private bool _isInitialized;
         //private static string FILE_NAME = @"C:\Work\GIS\data\shpList.txt";
         /// <summary>
@@ -121,8 +121,16 @@ namespace LayerList
 
                 Button1 b1 = addLayersToMap.B1; //// get the instance of the current one, do not create a new Button1
                 //Button1 b1 = new Button1(); 
-                b1.FILE_NAME = fileName;
-                b1.Enabled = true; 
+                if (b1 != null)
+                {
+                    b1.FILE_NAME = fileName;
+                    if (b1.Enabled == false)
+                    {
+                        b1.Enabled = true;
+                    }
+                }
+                
+
 
                 readText(fileName);
             }
@@ -178,7 +186,11 @@ namespace LayerList
             // TODO  Code behavior when selection changes.   
             AddLayersToMap addLayersToMap = AddLayersToMap.Current;
 
-            Button1 btn = addLayersToMap.B1; //new Button1();
+            Button1 btn = addLayersToMap.B1??new Button1();
+            //if (btn == null)
+            //{
+            //    btn = new Button1();
+            //}
 
             if (item.Text != "LayerName")
             {
