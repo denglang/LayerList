@@ -37,7 +37,7 @@
         <button id="LayerList_Button1" caption="Add Layers" className="Button1" loadOnClick="true" smallImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonBlue16.png" largeImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonBlue32.png">
           <tooltip heading="Add all layers or shapefiles to map">This button add all layers and shapefiles in the dropdown box to map, rasters skipped<disabledText /></tooltip>
         </button> 
-        <comboBox id="LayerList_ComboBox_LayerList" caption="Select Layer" className="ComboBox_LayerList" itemWidth="140" extendedCaption="Extended Caption" isEditable="false" isReadOnly="true" resizable="true">
+        <comboBox id="LayerList_ComboBox_LayerList" caption="Select Layer" className="ComboBox_LayerList" itemWidth="160" itemHeight="500" extendedCaption="Extended Caption" isEditable="false" isReadOnly="true" resizable="true">
           <tooltip heading="Select a file to add to map">Select file name from the dropdown box to add to map, the file can be a layer, shapefile or raster<disabledText /></tooltip>
         </comboBox>
         <button id="LayerList_Button2" caption="OpenTextFile" className="Button2" loadOnClick="true" smallImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonBlue16.png" largeImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonBlue32.png">

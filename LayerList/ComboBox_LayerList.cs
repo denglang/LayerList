@@ -153,39 +153,41 @@ namespace LayerList
                 }
                 foreach (string line in lines)
                 {
-                    if (line.Contains(","))
-                    {
-                        string[] content = line.Split(',');
-                        string layerName = content[0].Trim();
-                        //MessageBox.Show(layerName);
-                        //Add(new ComboBoxItem(layerName));
-                        layerNameAndPath[layerName] = content[1].Trim();
-                    }
-                    else
-                    {                                            
-                        string FName = Path.GetFileName(line.Trim());
-                        if (Path.HasExtension(line.Trim()))
+                    if (line!= "") 
+                    { 
+                        if (line.Contains(","))
                         {
-                            FName = Path.GetFileNameWithoutExtension(FName);
-                            //Add(new ComboBoxItem(FName));
-                            layerNameAndPath[FName] = line.Trim();
-                            
+                            string[] content = line.Split(',');
+                            string layerName = content[0].Trim();
+                            //MessageBox.Show(layerName);
+                            //Add(new ComboBoxItem(layerName));
+                            layerNameAndPath[layerName] = content[1].Trim();
                         }
                         else
                         {
-                            if (FName.ToUpper() == "MAPSERVER")
+                            string FName = Path.GetFileName(line.Trim());
+                            if (Path.HasExtension(line.Trim()))
                             {
-                                string[] folders = line.Trim().Split('\\'); //(Path.DirectorySeparatorChar);
-                                string serviceName = folders[folders.Length-1];
-                                //Add(new ComboBoxItem(serviceName));
-                                layerNameAndPath[serviceName] = line.Trim();
-                            } else
+                                FName = Path.GetFileNameWithoutExtension(FName);
+                                //Add(new ComboBoxItem(FName));
+                                layerNameAndPath[FName] = line.Trim();
+                            }
+                            else
                             {
-                                MessageBox.Show(FName + " is not a map service, please verify.");
-                                return; 
+                                if (FName.ToUpper().Contains("SERVER"))
+                                {
+                                    string[] folders = line.Trim().Split('/'); //(Path.DirectorySeparatorChar);
+                                    string serviceName = folders[folders.Length - 2];
+                                    //Add(new ComboBoxItem(serviceName));
+                                    layerNameAndPath[serviceName +" - "+ FName] = line.Trim();
+                                }
+                                else
+                                {
+                                    MessageBox.Show(FName + " is not a map service, please verify.");
+                                    return;
+                                }
                             }
                         }
-                                              
                     }
                 }
 
@@ -224,7 +226,7 @@ namespace LayerList
 
             if (item.Text.ToUpper() != "LAYERNAME")
             {
-                if (File.Exists(layerNameAndPath[item.Text]) || layerNameAndPath[item.Text].Contains("MapServer"))  //make sure the path exists
+                if (File.Exists(layerNameAndPath[item.Text]) || layerNameAndPath[item.Text].ToUpper().Contains("SERVER"))  //make sure the path exists
                 {
                     btn.AddLayer(layerNameAndPath[item.Text]); //get the path with dictionary key, then call AddLayer
                 }
