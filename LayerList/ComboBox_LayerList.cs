@@ -198,7 +198,7 @@ namespace LayerList
                     if (key.ToUpper() == "LAYERNAME") Insert(0, new ComboBoxItem(key));
                     else Add(new ComboBoxItem(key));
                 }
-                MessageBox.Show(this.ItemCollection.Count() + " layers added to layer list from "+FILE_NAME);
+               // MessageBox.Show(this.ItemCollection.Count() + " layers added to layer list from "+FILE_NAME);
                 _isInitialized = true;
             }
             else
