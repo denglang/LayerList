@@ -68,7 +68,7 @@ namespace LayerList
                 //Clear();
                 ClearLists();
                 //Add items to the combobox
-                string FILE_NAME = @"\\iowa.gov.state.ia.us\DATA\DNR_GIS_Data\gis_tools\ArcGISProAddin\layerList.txt";
+                string FILE_NAME = @"\\city.wdm.loc\gis\GISData\West Des Moines\Information Services\Work in Progress\lang\Pro_support\layerList.txt";
                 //string FILE_NAME = @"C:\Work\GIS\data\shpList1.txt";
 
                 if (File.Exists(FILE_NAME))

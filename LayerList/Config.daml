@@ -34,10 +34,10 @@
       <controls>
         <!-- add your controls here -->
         
-        <button id="LayerList_Button1" caption="Add Layers" className="Button1" loadOnClick="true" smallImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonBlue16.png" largeImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonBlue32.png">
+        <button id="LayerList_Button1" caption="Add All Layers" className="Button1" loadOnClick="true" smallImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonBlue16.png" largeImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonBlue32.png">
           <tooltip heading="Add all layers or shapefiles to map">This button add all layers and shapefiles in the dropdown box to map, rasters skipped<disabledText /></tooltip>
         </button> 
-        <comboBox id="LayerList_ComboBox_LayerList" caption="City of Ames GIS Layers:" className="ComboBox_LayerList" itemWidth="180" itemHeight="1100" extendedCaption="Extended Caption" isEditable="false" isReadOnly="true" resizable="true">
+        <comboBox id="LayerList_ComboBox_LayerList" caption="City of WDM GIS Layers:" className="ComboBox_LayerList" itemWidth="180" itemHeight="1100" extendedCaption="Extended Caption" isEditable="false" isReadOnly="true" resizable="true">
           <tooltip heading="Tooltip Heading">Load Ames GIS Layers<disabledText /></tooltip>
         </comboBox>
         <button id="LayerList_Button2" caption="OpenTextFile" className="Button2" loadOnClick="true" smallImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonBlue16.png" largeImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonBlue32.png">
